@@ -1,0 +1,18 @@
+# Chaste
+.chaste_deletable_folder
+build/
+
+# detailed Simulation / results output
+*.vtu
+*.pvd
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS / editor
+**.DS_Store
+Thumbs.db
+*.swp
