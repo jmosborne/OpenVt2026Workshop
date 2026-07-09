@@ -122,7 +122,7 @@ public:
         // Number of cells across (this^2 cells). Stored as an array so the sweep is easy to extend.
         unsigned num_cells_across_values[1] = {(unsigned) M_NUM_CELLS_ACROSS};
 
-        for (unsigned regime_index = 0; regime_index < 1; regime_index++)
+        for (unsigned regime_index = 1; regime_index < 2; regime_index++)
         {
             std::string regime = adhesion_regimes[regime_index];
 
