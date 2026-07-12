@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MorpheusModel version="4">
+    <Description>
+        <Title>OpenVT 2026 Cell Sorting</Title>
+        <Details>Two-cell-type Cellular Potts model for the OpenVT 2026 workshop.
+The model contains volume regulation, stochastic CPM motility, differential
+adhesion, and connectivity constraints only.</Details>
+    </Description>
+    <Global>
+        <Constant symbol="grid_n" value="10" name="Cells per grid dimension"/>
+        <Constant symbol="total_cells" value="grid_n^2"/>
+        <Constant symbol="target_volume" value="200"/>
+        <Constant symbol="cell_radius" value="sqrt(target_volume/pi)"/>
+        <Constant symbol="cell_spacing" value="2*cell_radius"/>
+        <Constant symbol="row_spacing" value="sqrt(3)/2*cell_spacing"/>
+        <Constant symbol="init_mode" value="0" name="0: shuffled, 1: block"/>
+        <Constant symbol="random_seed" value="0"/>
+        <Constant symbol="mcs_duration" value="0.72"/>
+        <Constant symbol="temperature" value="1"/>
+        <Constant symbol="directed_strength" value="0.2"/>
+        <Constant symbol="J_AA" value="0.2"/>
+        <Constant symbol="J_BB" value="0.2"/>
+        <Constant symbol="J_AB" value="5"/>
+        <Constant symbol="J_Am" value="6"/>
+        <Constant symbol="J_Bm" value="6"/>
+        <Variable symbol="heterotypic_boundary" value="0"/>
+    </Global>
+    <Space>
+        <Lattice class="hexagonal">
+            <Neighborhood>
+                <Order>optimal</Order>
+            </Neighborhood>
+            <Size symbol="size" value="25*grid_n, 29*grid_n, 0"/>
+            <BoundaryConditions>
+                <Condition type="constant" boundary="x"/>
+                <Condition type="constant" boundary="y"/>
+            </BoundaryConditions>
+        </Lattice>
+        <SpaceSymbol symbol="space"/>
+    </Space>
+    <Time>
+        <StartTime value="0"/>
+        <StopTime value="25000"/>
+        <RandomSeed value="random_seed"/>
+        <TimeSymbol symbol="time"/>
+    </Time>
+    <CellTypes>
+        <CellType name="A" class="biological">
+            <VolumeConstraint target="target_volume" strength="0.1"/>
+            <ConnectivityConstraint/>
+            <PropertyVector symbol="move_dir" value="1, 0, 0"/>
+            <DirectedMotion direction="move_dir" strength="directed_strength"/>
+            <Event time-step="1" trigger="when true">
+                <Condition>1</Condition>
+                <Intermediate symbol="angle" value="rand_uni(0, 2*pi)"/>
+                <VectorRule notation="r,φ,θ" symbol-ref="move_dir">
+                    <Expression>1, angle, 0</Expression>
+                </VectorRule>
+            </Event>
+            <ChangeCellType newCellType="B" time-step="1">
+                <Condition>
+                    (init_mode &lt; 0.5 and mod(abs(sin(cell.id*1.168735195730594)*20430.69986890581),1) &lt; 0.4986327195620106)
+                    or
+                    (init_mode &gt;= 0.5 and cell.center.y &lt; sqrt(3)/4*size.y)
+                </Condition>
+            </ChangeCellType>
+            <NeighborhoodReporter>
+                <Input value="cell.type == celltype.B.id" scaling="length"/>
+                <Output symbol-ref="heterotypic_boundary" mapping="sum"/>
+            </NeighborhoodReporter>
+        </CellType>
+        <CellType name="B" class="biological">
+            <VolumeConstraint target="target_volume" strength="0.1"/>
+            <ConnectivityConstraint/>
+            <PropertyVector symbol="move_dir" value="1, 0, 0"/>
+            <DirectedMotion direction="move_dir" strength="directed_strength"/>
+            <Event time-step="1" trigger="when true">
+                <Condition>1</Condition>
+                <Intermediate symbol="angle" value="rand_uni(0, 2*pi)"/>
+                <VectorRule notation="r,φ,θ" symbol-ref="move_dir">
+                    <Expression>1, angle, 0</Expression>
+                </VectorRule>
+            </Event>
+        </CellType>
+        <CellType name="medium" class="medium"/>
+    </CellTypes>
+    <CPM>
+        <Interaction default="0">
+            <Contact type1="A" type2="A" value="J_AA"/>
+            <Contact type1="B" type2="B" value="J_BB"/>
+            <Contact type1="A" type2="B" value="J_AB"/>
+            <Contact type1="A" type2="medium" value="J_Am"/>
+            <Contact type1="B" type2="medium" value="J_Bm"/>
+        </Interaction>
+        <MonteCarloSampler stepper="edgelist">
+            <MCSDuration value="mcs_duration"/>
+            <Neighborhood>
+                <Order>optimal</Order>
+            </Neighborhood>
+            <MetropolisKinetics temperature="temperature"/>
+        </MonteCarloSampler>
+        <ShapeSurface scaling="norm">
+            <Neighborhood>
+                <Order>4</Order>
+            </Neighborhood>
+        </ShapeSurface>
+    </CPM>
+    <CellPopulations>
+        <Population type="A" size="0">
+            <InitCellObjects mode="distance">
+                <Arrangement repetitions="grid_n, grid_n/2, 1" displacements="cell_spacing, 2*row_spacing, 1">
+                    <Sphere radius="cell_radius" center="size.x/2-(grid_n-1)*cell_spacing/2, sqrt(3)/4*size.y-(grid_n-1)*row_spacing/2, 0"/>
+                </Arrangement>
+                <Arrangement repetitions="grid_n, grid_n/2, 1" displacements="cell_spacing, 2*row_spacing, 1">
+                    <Sphere radius="cell_radius" center="size.x/2-(grid_n-2)*cell_spacing/2, sqrt(3)/4*size.y-(grid_n-2)*row_spacing/2, 0"/>
+                </Arrangement>
+            </InitCellObjects>
+        </Population>
+        <BoundaryValue value="medium" boundary="x"/>
+        <BoundaryValue value="medium" boundary="-x"/>
+        <BoundaryValue value="medium" boundary="y"/>
+        <BoundaryValue value="medium" boundary="-y"/>
+    </CellPopulations>
+    <Analysis>
+        <Gnuplotter time-step="2500" decorate="false">
+            <Terminal name="png"/>
+            <Plot title="Cell types">
+                <Cells flooding="true" value="cell.type">
+                    <ColorMap>
+                        <Color value="1" color="purple"/>
+                        <Color value="2" color="green"/>
+                    </ColorMap>
+                </Cells>
+            </Plot>
+        </Gnuplotter>
+        <Logger time-step="250" name="portal_raw">
+            <Input>
+                <Symbol symbol-ref="cell.type"/>
+                <Symbol symbol-ref="cell.center.x"/>
+                <Symbol symbol-ref="cell.center.y"/>
+            </Input>
+            <Output>
+                <TextOutput file-name="portal_raw" separator="comma"/>
+            </Output>
+        </Logger>
+        <Logger time-step="250" name="heterotypic_boundary">
+            <Input>
+                <Symbol symbol-ref="heterotypic_boundary"/>
+            </Input>
+            <Output>
+                <TextOutput file-name="heterotypic_boundary" separator="comma"/>
+            </Output>
+        </Logger>
+        <ModelGraph include-tags="#untagged" format="dot" reduced="false"/>
+    </Analysis>
+</MorpheusModel>
