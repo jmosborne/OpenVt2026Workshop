@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MorpheusModel version="4">
+    <Description>
+        <Title>OpenVT Cell Motility Calibration</Title>
+        <Details>One isolated CPM cell used to calibrate non-persistent motility.</Details>
+    </Description>
+    <Global>
+        <Constant symbol="target_volume" value="200"/>
+        <Constant symbol="cell_radius" value="sqrt(target_volume/pi)"/>
+        <Constant symbol="mcs_duration" value="0.72"/>
+        <Constant symbol="temperature" value="1"/>
+        <Constant symbol="directed_strength" value="0.2"/>
+        <Constant symbol="random_seed" value="0"/>
+        <Constant symbol="J_Am" value="1.2"/>
+    </Global>
+    <Space>
+        <Lattice class="hexagonal">
+            <Neighborhood>
+                <Order>optimal</Order>
+            </Neighborhood>
+            <Size symbol="size" value="200, 232, 0"/>
+            <BoundaryConditions>
+                <Condition type="constant" boundary="x"/>
+                <Condition type="constant" boundary="y"/>
+            </BoundaryConditions>
+        </Lattice>
+        <SpaceSymbol symbol="space"/>
+    </Space>
+    <Time>
+        <StartTime value="0"/>
+        <StopTime value="100"/>
+        <RandomSeed value="random_seed"/>
+        <TimeSymbol symbol="time"/>
+    </Time>
+    <CellTypes>
+        <CellType name="A" class="biological">
+            <VolumeConstraint target="target_volume" strength="0.1"/>
+            <ConnectivityConstraint/>
+            <PropertyVector symbol="move_dir" value="1, 0, 0"/>
+            <DirectedMotion direction="move_dir" strength="directed_strength"/>
+            <Event time-step="1" trigger="when true">
+                <Condition>1</Condition>
+                <Intermediate symbol="angle" value="rand_uni(0, 2*pi)"/>
+                <VectorRule notation="r,φ,θ" symbol-ref="move_dir">
+                    <Expression>1, angle, 0</Expression>
+                </VectorRule>
+            </Event>
+        </CellType>
+        <CellType name="medium" class="medium"/>
+    </CellTypes>
+    <CPM>
+        <Interaction default="0">
+            <Contact type1="A" type2="A" value="0"/>
+            <Contact type1="A" type2="medium" value="J_Am"/>
+        </Interaction>
+        <MonteCarloSampler stepper="edgelist">
+            <MCSDuration value="mcs_duration"/>
+            <Neighborhood>
+                <Order>optimal</Order>
+            </Neighborhood>
+            <MetropolisKinetics temperature="temperature"/>
+        </MonteCarloSampler>
+        <ShapeSurface scaling="norm">
+            <Neighborhood>
+                <Order>4</Order>
+            </Neighborhood>
+        </ShapeSurface>
+    </CPM>
+    <CellPopulations>
+        <Population type="A" size="0">
+            <InitCellObjects mode="distance">
+                <Arrangement repetitions="1, 1, 1" displacements="1, 1, 1">
+                    <Sphere radius="cell_radius" center="size.x/2, sqrt(3)/4*size.y, 0"/>
+                </Arrangement>
+            </InitCellObjects>
+        </Population>
+        <BoundaryValue value="medium" boundary="x"/>
+        <BoundaryValue value="medium" boundary="-x"/>
+        <BoundaryValue value="medium" boundary="y"/>
+        <BoundaryValue value="medium" boundary="-y"/>
+    </CellPopulations>
+    <Analysis>
+        <Logger time-step="1" name="calibration_raw">
+            <Input>
+                <Symbol symbol-ref="cell.center.x"/>
+                <Symbol symbol-ref="cell.center.y"/>
+                <Symbol symbol-ref="move_dir.x"/>
+                <Symbol symbol-ref="move_dir.y"/>
+                <Symbol symbol-ref="cell.volume"/>
+                <Symbol symbol-ref="cell.surface"/>
+            </Input>
+            <Output>
+                <TextOutput file-name="calibration_raw" separator="comma"/>
+            </Output>
+        </Logger>
+        <Gnuplotter time-step="100" decorate="false">
+            <Terminal name="png"/>
+            <Plot title="Calibration cell">
+                <Cells flooding="true" value="cell.id"/>
+            </Plot>
+        </Gnuplotter>
+        <ModelGraph include-tags="#untagged" format="dot" reduced="false"/>
+    </Analysis>
+</MorpheusModel>
