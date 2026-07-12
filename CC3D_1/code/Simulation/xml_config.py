@@ -42,7 +42,11 @@ def configure_xml(config: ModelConfig, simulation_dir: Path) -> None:
     dimensions = potts.getFirstElement("Dimensions")
     dimensions.updateElementAttributes(
         dictionaryToMapStrStr(
-            {"x": config.profile.lattice_x, "y": config.profile.lattice_y, "z": 1}
+            {
+                "x": str(config.profile.lattice_x),
+                "y": str(config.profile.lattice_y),
+                "z": "1",
+            }
         )
     )
     _set_value(potts, "Steps", config.profile.final_mcs)
@@ -56,7 +60,7 @@ def configure_xml(config: ModelConfig, simulation_dir: Path) -> None:
             dictionaryToMapStrStr(
                 {
                     "CellType": cell_type,
-                    "FluctuationAmplitude": amplitudes[cell_type],
+                    "FluctuationAmplitude": str(amplitudes[cell_type]),
                 }
             )
         )

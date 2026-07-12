@@ -13,7 +13,10 @@ def _plugin(root, name: str):
 
 
 def _set_value(parent, name: str, value) -> None:
-    parent.getFirstElement(name).updateElementValue(str(value))
+    element = parent.getFirstElement(name)
+    if element is None:
+        raise RuntimeError(f"missing required XML element {name!r}")
+    element.updateElementValue(str(value))
 
 
 def configure_xml(config: CalibrationConfig, simulation_dir: Path) -> None:
@@ -30,14 +33,18 @@ def configure_xml(config: CalibrationConfig, simulation_dir: Path) -> None:
     potts = root.getFirstElement("Potts")
     potts.getFirstElement("Dimensions").updateElementAttributes(
         dictionaryToMapStrStr(
-            {"x": config.lattice_size, "y": config.lattice_size, "z": 1}
+            {
+                "x": str(config.lattice_size),
+                "y": str(config.lattice_size),
+                "z": "1",
+            }
         )
     )
     _set_value(potts, "Steps", config.total_steps)
     amplitude = potts.getFirstElement("FluctuationAmplitude")
     amplitude.getFirstElement("FluctuationAmplitudeParameters").updateElementAttributes(
         dictionaryToMapStrStr(
-            {"CellType": "Cell", "FluctuationAmplitude": config.temperature}
+            {"CellType": "Cell", "FluctuationAmplitude": str(config.temperature)}
         )
     )
     _set_value(potts, "RandomSeed", config.seed)
