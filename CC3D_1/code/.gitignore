@@ -1,0 +1,9 @@
+Output/
+Visualizations/
+LatticeData/
+Screenshots/
+__pycache__/
+*.py[cod]
+*.vtk
+*.dml
+simulation.log
