@@ -19,7 +19,7 @@ let config = {
 	simsettings: {
 		NRCELLS: [5, 5],
 		BURNIN : 10,
-		RUNTIME : 5000,
+		RUNTIME : 15000,
 		
 		CANVASCOLOR: "EEEEEE",
 		CELLCOLOR: ["ff", "0000ff"] ,
@@ -28,12 +28,12 @@ let config = {
 		ACTCOLOR: [true,true],
 		zoom : 2,							
 		SAVEIMG : true,					
-		IMGFRAMERATE : 20,					
+		IMGFRAMERATE : 100,					
 		SAVEPATH : "img",				
 		EXPNAME : "CellSorting",	
 		
 		STATSOUT : { browser: false, node: true }, // Should stats be computed?
-		LOGRATE : 10							// Output stats every <LOGRATE> MCS.
+		LOGRATE : 100							// Output stats every <LOGRATE> MCS.
 
 	}
 }
