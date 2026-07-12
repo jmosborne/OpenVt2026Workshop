@@ -7,12 +7,12 @@ let config = {
 	torus: [true,true],
 	conf: {
 		T: 100,
-		J: [[0,30,30],[30,10,20], [30, 20, 10]],
+		J: [[0,40,40],[40,12,30], [40, 30, 12]],
 		V: [0,200, 200],
 		LAMBDA_V: [0,1, 1],
 		P: [0,220, 220],
 		LAMBDA_P: [0,2, 2],
-    	LAMBDA_ACT : [0,100,100],
+    	LAMBDA_ACT : [0,200,200],
     	MAX_ACT : [0,10,10],
     	ACT_MEAN : "geometric"
 	},
@@ -48,8 +48,22 @@ let sim = new CPM.Simulation( config, custommethods )
 function initializeGrid(){
 	
 	this.addGridManipulator() 
-	this.gm.seedCellsInCircle( 1, 50, this.C.midpoint, 70 )
-	this.gm.seedCellsInCircle( 2, 50, this.C.midpoint, 70 )
+	// don't initialize with lambda_act due to artifacts from high expansion force + feedback
+	const lact1 = this.C.conf.LAMBDA_ACT[1]
+	const lact2 = this.C.conf.LAMBDA_ACT[2]
+	this.C.conf.LAMBDA_ACT[1] = 0
+	this.C.conf.LAMBDA_ACT[2] = 0
+	this.gm.seedCellsInCircle( 1, 100, this.C.midpoint, 70 )
+	for( let cid of this.C.cellIDs() ){
+		if( this.C.random() < 0.5 ) this.C.setCellKind( cid, 2 )
+	}
+	
+	for( let t= 0; t < 10 ; t++ ){
+		this.C.timeStep()
+	}
+	// reset to original value
+	this.C.conf.LAMBDA_ACT[1] = lact1
+	this.C.conf.LAMBDA_ACT[2] = lact2
 
 }
 
