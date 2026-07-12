@@ -113,14 +113,14 @@ function logStats(){
 			let thecentroid = allcentroids[cid]
 			
 			// eslint-disable-next-line no-console
-			console.log( this.time + "," + cid + "," + 
+			console.log( "0" , this.time + "," + cid + "," + 
 				this.C.cellKind(cid) + "," + thecentroid.join(",") )
 			
 		}
  
 	}
 
-console.log( 'SIMID' + "," + "CellID" + "," + 
+console.log( 'simID' + ",time," + "CellID" + "," + 
 				"CellKind" + "," + "x,y" )
-				
+
 sim.run()
