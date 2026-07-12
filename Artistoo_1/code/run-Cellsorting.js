@@ -113,7 +113,7 @@ function logStats(){
 			let thecentroid = allcentroids[cid]
 			
 			// eslint-disable-next-line no-console
-			console.log( "0" , this.time + "," + cid + "," + 
+			console.log( "0," , this.time + "," + cid + "," + 
 				this.C.cellKind(cid) + "," + thecentroid.join(",") )
 			
 		}
