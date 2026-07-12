@@ -9,7 +9,11 @@ The model is a two-dimensional Cellular Potts Model on a hexagonal lattice. It c
 - `code/morpheusml.xml`: 100- or 400-cell sorting, checkerboard, and engulfment model.
 - `code/motility_calibration.xml`: isolated-cell motility calibration.
 - `code/export_portal_csv.py`: converter and validator for the OpenVT portal schema.
-- `data/`: final portal-ready 400-cell CSV files.
+- `code/morpheusml_calibrated_passive.xml`: exact model for the additional calibrated passive pilot.
+- `code/generate_model_calibrated_passive.py`: parameterized generator for that pilot family.
+- `code/export_portal_csv_calibrated.py` and `code/validate_portal_csv_calibrated.py`: standalone
+  converter and validator supporting calibrated non-integer model times.
+- `data/`: portal-ready development CSV files and their provenance records.
 
 ## Parameters
 
@@ -50,3 +54,40 @@ Morpheus accepts contact energies, initialization mode, random seed, grid size, 
 The committed production configuration uses `StopTime=25000`, logger interval `250`, and plot interval `2500`, giving 101 data points and 11 image frames. Use seed 0 for final production output. Development robustness checks use seeds 0, 1, and 2.
 
 Before increasing `grid_n` from 10 to 20, validate all three regimes with 100 cells. For a 400-cell run that has not plateaued, extend only the stop time and keep all physical parameters unchanged.
+
+## Additional calibrated passive development pilot
+
+`data/sorting_100_seed20260712_calibrated_passive.csv` is an independent 100-cell
+development result generated with Morpheus 2.4.1. It is included for portal comparison and is
+not a replacement for the active-motility result above.
+
+The pilot uses a square-lattice CPM with target area 200, area-constraint strength 1,
+`T=3`, `J_AA=J_BB=8`, `J_AB=16`, and `J_Am=J_Bm=16`. There is no active
+`DirectedMotion` term. An isolated-cell MSD measurement gave the preliminary clock conversion
+`MCSDuration=0.011763426983168733`; 25,000 MCS therefore correspond to 294.086 model-time
+units.
+
+The submitted CSV has `simID=0`, the exact portal header, 10,100 rows, 101 evenly spaced
+times, 100 stable cell IDs per time, and 50 cells of each type at every time. Its accompanying
+manifest records the exact model SHA-256, parameters, seed, duration, and software version.
+
+This run shows substantial but incomplete segregation. A local six-nearest-centre-neighbour
+proxy falls from 0.473 to 0.254, but the final proxy graph still contains four A components and
+two B components. The workshop portal's Delaunay/Voronoi contact-length calculation remains
+authoritative, and this file should be treated as a development pilot rather than an equilibrated
+production result.
+
+Coordinates in this CSV use the equivalent-circle diameter
+`sqrt(4*target_area/pi)`. The preliminary MSD clock used ideal hexagonal packed spacing; repeat
+the calibration with a measured relaxed or packed-state diameter before using this run for final
+cross-framework kinetic comparisons.
+
+Validate the submitted file from the `morpheus-ai` directory with:
+
+```sh
+python3 code/validate_portal_csv_calibrated.py \
+  data/sorting_100_seed20260712_calibrated_passive.csv --cells 100
+```
+
+The complete parameter screens, calibration summaries, visualizations, and batch tooling are in
+the [companion Morpheus repository](https://github.com/systems-mechanobiology/morpheus_trials/tree/agent/accelerated-sorting).

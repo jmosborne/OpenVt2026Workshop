@@ -1,0 +1,79 @@
+{
+  "cell_count": 100,
+  "cell_type_counts": {
+    "A": 50,
+    "B": 50
+  },
+  "completed_at_utc": "2026-07-12T14:09:01.522107+00:00",
+  "diagnostic_analysis": {
+    "authoritative_analysis": "OpenVT portal Voronoi/Delaunay analysis",
+    "convergence_proxy": {
+      "component_counts_stable_over_final_20pct": false,
+      "converged": false,
+      "late_normalized_slope_per_model_time": 1.793392247471119e-05,
+      "normalized_window_60_80_mean": 0.5698328272672666,
+      "normalized_window_80_100_mean": 0.5398474354819904,
+      "relative_window_change": 0.055544196034763745,
+      "scaled_late_slope_fraction_of_dynamic_range": 0.002153305366259896,
+      "within_5pct_scaled_slope_criterion": true,
+      "within_5pct_window_criterion": false
+    },
+    "final_a_core_radial_order_score": 0.334,
+    "final_heterotypic_fraction": 0.25449101796407186,
+    "final_inner_20pct_a_fraction": 0.2,
+    "final_largest_same_type_component_fraction_proxy": {
+      "A": 0.62,
+      "B": 0.86
+    },
+    "final_mean_radius_cell_diameters": {
+      "A": 3.7320394340426075,
+      "B": 3.021502457503812
+    },
+    "final_outer_20pct_b_fraction": 0.4,
+    "final_same_type_component_count_proxy": {
+      "A": 4,
+      "B": 2
+    },
+    "final_type_centroid_separation_cell_diameters": 0.8331781620772687,
+    "initial_heterotypic_fraction": 0.4725609756097561,
+    "method": "undirected union of each centre's 6 nearest neighbours"
+  },
+  "duration": 294.085674579,
+  "expected_time_points": 101,
+  "exported_rows": 10100,
+  "exported_time_points": 101,
+  "mcs_duration": 0.0117634269832,
+  "mcs_steps": 25000,
+  "model_path": "../code/morpheusml_calibrated_passive.xml",
+  "model_sha256": "34d030999f07cd8671f4af00359e8de309a6abbb3105ae1978b92165c080eeba",
+  "outputs": {
+    "analysis_summary": "sorting_100_seed20260712_calibrated_passive_analysis.json",
+    "contact_proxy": null,
+    "morpheus_log": null,
+    "portal_csv": "sorting_100_seed20260712_calibrated_passive.csv",
+    "raw_logger": null,
+    "validation": "sorting_100_seed20260712_calibrated_passive_validation.json"
+  },
+  "parameters": {
+    "J_AA": 8.0,
+    "J_AB": 16.0,
+    "J_A_medium": 16.0,
+    "J_BB": 8.0,
+    "J_B_medium": 16.0,
+    "cell_diameter": 15.9576912161,
+    "motility_strength": 0.0,
+    "target_area": 200.0,
+    "temperature": 3.0
+  },
+  "pattern": "random",
+  "regime": "sorting",
+  "sample_interval": 2.94085674579,
+  "seed": 20260712,
+  "simulation_id": "0",
+  "source_simulation_id": "sorting-calibrated-g8-25000-r01-s20260712",
+  "software_version": "Version: 2.4.1",
+  "start_time": 0.0,
+  "started_at_utc": "2026-07-12T14:05:15.587197+00:00",
+  "status": "complete",
+  "validation_status": "valid"
+}
