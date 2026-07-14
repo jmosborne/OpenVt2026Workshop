@@ -3,30 +3,37 @@ let CPM = require("./artistoo-cjs-v1.2.0.js")
 let {CentroidsWithTorusCorrection, Centroids} = CPM
 
 let config = {
-	field_size: [150,150],
+	field_size: [250,250],
 	torus: [true,true],
 	conf: {
-		T: 10,
-		J: [[0,16,16],[16,14,11], [16, 11, 2]],
-		V: [0,36, 36],
-		LAMBDA_V: [0,1, 1]
+		T: 100,
+		J: [[0,40,40],[40,12,30], [40, 30, 12]],
+		V: [0,200, 200],
+		LAMBDA_V: [0,1, 1],
+		P: [0,220, 220],
+		LAMBDA_P: [0,2, 2],
+    	LAMBDA_ACT : [0,200,200],
+    	MAX_ACT : [0,10,10],
+    	ACT_MEAN : "geometric"
 	},
 	simsettings: {
-		NRCELLS: [1,1],
-		BURNIN : 0,
-		RUNTIME : 1000,
+		NRCELLS: [5, 5],
+		BURNIN : 10,
+		RUNTIME : 15000,
+		
 		CANVASCOLOR: "EEEEEE",
-		CELLCOLOR: ["ff0000", "0000ff"] ,
+		CELLCOLOR: ["ff", "0000ff"] ,
    		SHOWBORDERS : [true, true],
    		BORDERCOL : ["ffffff", "ffffff"],
+		ACTCOLOR: [true,true],
 		zoom : 2,							
 		SAVEIMG : true,					
-		IMGFRAMERATE : 10,					
+		IMGFRAMERATE : 100,					
 		SAVEPATH : "img",				
-		EXPNAME : "CellSorting2",	
+		EXPNAME : "CellSorting",	
 		
 		STATSOUT : { browser: false, node: true }, // Should stats be computed?
-		LOGRATE : 10							// Output stats every <LOGRATE> MCS.
+		LOGRATE : 100							// Output stats every <LOGRATE> MCS.
 
 	}
 }
@@ -41,15 +48,23 @@ let sim = new CPM.Simulation( config, custommethods )
 function initializeGrid(){
 	
 	this.addGridManipulator() 
-	let gm = this.gm
-
-	for( let xi = 0; xi < 10; xi++ ){
-		for( let yi = 0; yi < 10; yi++ ){
-			let kind = 1 + ((xi + yi) % 2 ) // checkerboard
-			let rect = gm.makeBox( [45+6*xi,45+6*yi], [6,6]  )
-			gm.assignCellPixels( rect, kind )
-		}
+	// don't initialize with lambda_act due to artifacts from high expansion force + feedback
+	const lact1 = this.C.conf.LAMBDA_ACT[1]
+	const lact2 = this.C.conf.LAMBDA_ACT[2]
+	this.C.conf.LAMBDA_ACT[1] = 0
+	this.C.conf.LAMBDA_ACT[2] = 0
+	this.gm.seedCellsInCircle( 1, 100, this.C.midpoint, 70 )
+	for( let cid of this.C.cellIDs() ){
+		if( this.C.random() < 0.5 ) this.C.setCellKind( cid, 2 )
 	}
+	
+	for( let t= 0; t < 10 ; t++ ){
+		this.C.timeStep()
+	}
+	// reset to original value
+	this.C.conf.LAMBDA_ACT[1] = lact1
+	this.C.conf.LAMBDA_ACT[2] = lact2
+
 }
 
 
