@@ -26,7 +26,7 @@ let config = {
 		EXPNAME : "CellSorting2",	
 		
 		STATSOUT : { browser: false, node: true }, // Should stats be computed?
-		LOGRATE : 10							// Output stats every <LOGRATE> MCS.
+		LOGRATE : 1							// Output stats every <LOGRATE> MCS.
 
 	}
 }
@@ -53,7 +53,11 @@ function initializeGrid(){
 }
 
 
-function logStats(){
+function logStats( add = 1 ){
+
+		if( (this.time + add ) % 10 != 0 ) return
+		
+		
 		
 		let allcentroids  = this.C.getStat( CPM.CentroidsWithTorusCorrection )
 
@@ -62,7 +66,7 @@ function logStats(){
 			// roughly cell diameter = 1
 			let thecentroid = allcentroids[cid].map( x => x / 16 )
 			
-			console.log( "0," , this.time + "," + cid + "," + 
+			console.log( "0," , (this.time + add )+ "," + cid + "," + 
 				this.C.cellKind(cid) + "," + thecentroid.join(",") )
 			
 		}
@@ -72,4 +76,5 @@ function logStats(){
 console.log( 'simID' + ",time," + "cellID" + "," + 
 				"cellType" + "," + "x,y" )
 
+sim.logStats( 0 ) // temporary fix for time counter in artistoo.
 sim.run()
