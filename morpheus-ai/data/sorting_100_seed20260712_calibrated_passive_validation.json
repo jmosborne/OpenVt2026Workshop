@@ -1,0 +1,15 @@
+{
+  "cell_type_counts_per_time": {
+    "A": 50,
+    "B": 50
+  },
+  "cells_per_time": 100,
+  "end_time": 294.0856746,
+  "path": "sorting_100_seed20260712_calibrated_passive.csv",
+  "rows": 10100,
+  "sample_interval": 2.940856746,
+  "sim_id": "0",
+  "start_time": 0.0,
+  "status": "valid",
+  "time_points": 101
+}
