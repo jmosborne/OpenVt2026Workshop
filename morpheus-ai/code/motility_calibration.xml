@@ -5,13 +5,19 @@
         <Details>One isolated CPM cell used to calibrate non-persistent motility.</Details>
     </Description>
     <Global>
-        <Constant symbol="target_volume" value="200"/>
-        <Constant symbol="cell_radius" value="sqrt(target_volume/pi)"/>
-        <Constant symbol="mcs_duration" value="0.72"/>
+        <Constant symbol="target_area_real" value="1"/>
+        <Constant symbol="dx" value="1/sqrt(12)"/>
+        <Constant symbol="target_area_lattice" value="target_area_real/(dx^2)"/>
+        <Constant symbol="cell_diameter_real" value="2*sqrt(target_area_real/pi)"/>
+        <Constant symbol="cell_diameter_lattice" value="cell_diameter_real/dx"/>
+        <Constant symbol="cell_radius" value="cell_diameter_lattice/2"/>
+        <Constant symbol="mcs_duration" value="1"/>
         <Constant symbol="temperature" value="1"/>
-        <Constant symbol="directed_strength" value="0.2"/>
+        <Constant symbol="area_strength_real" value="43.2"/>
+        <Constant symbol="area_strength_lattice" value="area_strength_real*(dx^4)"/>
         <Constant symbol="random_seed" value="0"/>
-        <Constant symbol="J_Am" value="1.2"/>
+        <Constant symbol="J_cm_real" value="2*sqrt(12)"/>
+        <Constant symbol="J_cm_lattice" value="J_cm_real*dx"/>
     </Global>
     <Space>
         <Lattice class="hexagonal">
@@ -34,24 +40,21 @@
     </Time>
     <CellTypes>
         <CellType name="A" class="biological">
-            <VolumeConstraint target="target_volume" strength="0.1"/>
+            <VolumeConstraint target="target_area_lattice" strength="area_strength_lattice"/>
             <ConnectivityConstraint/>
-            <PropertyVector symbol="move_dir" value="1, 0, 0"/>
-            <DirectedMotion direction="move_dir" strength="directed_strength"/>
-            <Event time-step="1" trigger="when true">
-                <Condition>1</Condition>
-                <Intermediate symbol="angle" value="rand_uni(0, 2*pi)"/>
-                <VectorRule notation="r,φ,θ" symbol-ref="move_dir">
-                    <Expression>1, angle, 0</Expression>
-                </VectorRule>
-            </Event>
+            <Function symbol="cell_area_cd2">
+                <Expression>cell.volume*(dx^2)/(cell_diameter_real^2)</Expression>
+            </Function>
+            <Function symbol="cell_perimeter_cd">
+                <Expression>cell.surface*dx/cell_diameter_real</Expression>
+            </Function>
         </CellType>
         <CellType name="medium" class="medium"/>
     </CellTypes>
     <CPM>
         <Interaction default="0">
             <Contact type1="A" type2="A" value="0"/>
-            <Contact type1="A" type2="medium" value="J_Am"/>
+            <Contact type1="A" type2="medium" value="J_cm_lattice"/>
         </Interaction>
         <MonteCarloSampler stepper="edgelist">
             <MCSDuration value="mcs_duration"/>
@@ -84,10 +87,8 @@
             <Input>
                 <Symbol symbol-ref="cell.center.x"/>
                 <Symbol symbol-ref="cell.center.y"/>
-                <Symbol symbol-ref="move_dir.x"/>
-                <Symbol symbol-ref="move_dir.y"/>
-                <Symbol symbol-ref="cell.volume"/>
-                <Symbol symbol-ref="cell.surface"/>
+                <Symbol symbol-ref="cell_area_cd2"/>
+                <Symbol symbol-ref="cell_perimeter_cd"/>
             </Input>
             <Output>
                 <TextOutput file-name="calibration_raw" separator="comma"/>
