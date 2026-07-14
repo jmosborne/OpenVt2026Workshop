@@ -1,0 +1,776 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <MorpheusModel version="4">
+            <Description>
+                <Title>Cell sorting: 100 cells, random layout, sorting regime</Title>
+                <Details>
+        OpenVT 2026 cell-sorting model: volume exclusion, non-persistent stochastic CPM motility,
+        and differential contact energies only. No signalling, chemotaxis, proliferation, or death.
+        The regular hexagonal centre layout contains exactly 50 cells of each type.
+        Pattern: random. Regime: sorting. Homotypic contacts are favoured and unlike contacts are costly.
+        CPM steps: 25000. Model time per MCS: 0.0117634269832.
+                </Details>
+            </Description>
+            <Global>
+                <Constant symbol="target_area" name="Target cell area (lattice units squared)" value="200"/>
+                <Constant symbol="cell_diameter" name="Relaxed cell diameter (lattice units)" value="15.9576912161"/>
+                <Constant symbol="J_AA" name="A-A contact energy" value="8"/>
+                <Constant symbol="J_BB" name="B-B contact energy" value="8"/>
+                <Constant symbol="J_AB" name="A-B contact energy" value="16"/>
+                <Constant symbol="J_A_medium" name="A-medium contact energy" value="16"/>
+                <Constant symbol="J_B_medium" name="B-medium contact energy" value="16"/>
+                <Constant symbol="T" name="CPM motility temperature" value="3"/>
+            </Global>
+            <Space>
+                <SpaceSymbol symbol="space"/>
+                <Lattice class="square">
+                    <Size symbol="size" value="244, 215, 0"/>
+                    <BoundaryConditions>
+                        <Condition type="constant" boundary="x"/>
+                        <Condition type="constant" boundary="-x"/>
+                        <Condition type="constant" boundary="y"/>
+                        <Condition type="constant" boundary="-y"/>
+                    </BoundaryConditions>
+                    <Neighborhood><Order>2</Order></Neighborhood>
+                </Lattice>
+            </Space>
+            <Time>
+                <StartTime value="0"/>
+                <StopTime value="294.085674579"/>
+                <RandomSeed value="20260712"/>
+                <TimeSymbol symbol="time"/>
+            </Time>
+            <CellTypes>
+                <CellType class="biological" name="A"><VolumeConstraint target="target_area" strength="1"/></CellType>
+                <CellType class="biological" name="B"><VolumeConstraint target="target_area" strength="1"/></CellType>
+                <CellType class="medium" name="medium"/>
+            </CellTypes>
+            <CPM>
+                <Interaction default="0">
+                    <Contact type1="A" type2="A" value="J_AA"/>
+                    <Contact type1="B" type2="B" value="J_BB"/>
+                    <Contact type1="A" type2="B" value="J_AB"/>
+                    <Contact type1="A" type2="medium" value="J_A_medium"/>
+                    <Contact type1="B" type2="medium" value="J_B_medium"/>
+                </Interaction>
+                <MonteCarloSampler stepper="edgelist">
+                    <MCSDuration value="0.0117634269832"/>
+                    <Neighborhood><Order>2</Order></Neighborhood>
+                    <MetropolisKinetics temperature="T"/>
+                </MonteCarloSampler>
+                <ShapeSurface scaling="norm"><Neighborhood><Order>6</Order></Neighborhood></ShapeSurface>
+            </CPM>
+            <CellPopulations>
+        <Population type="B" size="1" name="B-1">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="26.8700576851, 26.8700576851, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-2">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="43.8406204336, 26.8700576851, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-3">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="60.811183182, 26.8700576851, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-4">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="77.7817459305, 26.8700576851, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-5">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="94.752308679, 26.8700576851, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-6">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="111.722871427, 26.8700576851, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-7">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="128.693434176, 26.8700576851, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-8">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="145.663996924, 26.8700576851, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-9">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="162.634559673, 26.8700576851, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-10">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="179.605122421, 26.8700576851, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-11">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="35.3553390593, 41.5669961418, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-12">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="52.3259018078, 41.5669961418, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-13">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="69.2964645563, 41.5669961418, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-14">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="86.2670273048, 41.5669961418, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-15">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="103.237590053, 41.5669961418, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-16">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="120.208152802, 41.5669961418, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-17">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="137.17871555, 41.5669961418, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-18">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="154.149278299, 41.5669961418, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-19">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="171.119841047, 41.5669961418, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-20">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="188.090403796, 41.5669961418, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-21">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="26.8700576851, 56.2639345985, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-22">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="43.8406204336, 56.2639345985, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-23">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="60.811183182, 56.2639345985, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-24">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="77.7817459305, 56.2639345985, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-25">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="94.752308679, 56.2639345985, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-26">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="111.722871427, 56.2639345985, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-27">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="128.693434176, 56.2639345985, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-28">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="145.663996924, 56.2639345985, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-29">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="162.634559673, 56.2639345985, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-30">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="179.605122421, 56.2639345985, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-31">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="35.3553390593, 70.9608730552, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-32">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="52.3259018078, 70.9608730552, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-33">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="69.2964645563, 70.9608730552, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-34">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="86.2670273048, 70.9608730552, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-35">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="103.237590053, 70.9608730552, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-36">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="120.208152802, 70.9608730552, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-37">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="137.17871555, 70.9608730552, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-38">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="154.149278299, 70.9608730552, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-39">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="171.119841047, 70.9608730552, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-40">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="188.090403796, 70.9608730552, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-41">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="26.8700576851, 85.6578115119, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-42">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="43.8406204336, 85.6578115119, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-43">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="60.811183182, 85.6578115119, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-44">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="77.7817459305, 85.6578115119, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-45">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="94.752308679, 85.6578115119, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-46">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="111.722871427, 85.6578115119, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-47">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="128.693434176, 85.6578115119, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-48">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="145.663996924, 85.6578115119, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-49">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="162.634559673, 85.6578115119, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-50">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="179.605122421, 85.6578115119, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-51">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="35.3553390593, 100.354749969, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-52">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="52.3259018078, 100.354749969, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-53">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="69.2964645563, 100.354749969, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-54">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="86.2670273048, 100.354749969, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-55">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="103.237590053, 100.354749969, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-56">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="120.208152802, 100.354749969, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-57">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="137.17871555, 100.354749969, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-58">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="154.149278299, 100.354749969, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-59">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="171.119841047, 100.354749969, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-60">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="188.090403796, 100.354749969, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-61">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="26.8700576851, 115.051688425, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-62">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="43.8406204336, 115.051688425, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-63">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="60.811183182, 115.051688425, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-64">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="77.7817459305, 115.051688425, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-65">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="94.752308679, 115.051688425, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-66">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="111.722871427, 115.051688425, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-67">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="128.693434176, 115.051688425, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-68">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="145.663996924, 115.051688425, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-69">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="162.634559673, 115.051688425, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-70">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="179.605122421, 115.051688425, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-71">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="35.3553390593, 129.748626882, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-72">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="52.3259018078, 129.748626882, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-73">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="69.2964645563, 129.748626882, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-74">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="86.2670273048, 129.748626882, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-75">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="103.237590053, 129.748626882, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-76">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="120.208152802, 129.748626882, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-77">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="137.17871555, 129.748626882, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-78">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="154.149278299, 129.748626882, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-79">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="171.119841047, 129.748626882, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-80">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="188.090403796, 129.748626882, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-81">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="26.8700576851, 144.445565339, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-82">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="43.8406204336, 144.445565339, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-83">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="60.811183182, 144.445565339, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-84">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="77.7817459305, 144.445565339, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-85">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="94.752308679, 144.445565339, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-86">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="111.722871427, 144.445565339, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-87">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="128.693434176, 144.445565339, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-88">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="145.663996924, 144.445565339, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-89">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="162.634559673, 144.445565339, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-90">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="179.605122421, 144.445565339, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-91">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="35.3553390593, 159.142503795, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-92">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="52.3259018078, 159.142503795, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-93">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="69.2964645563, 159.142503795, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-94">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="86.2670273048, 159.142503795, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="B" size="1" name="B-95">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="103.237590053, 159.142503795, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-96">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="120.208152802, 159.142503795, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-97">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="137.17871555, 159.142503795, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-98">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="154.149278299, 159.142503795, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-99">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="171.119841047, 159.142503795, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+<Population type="A" size="1" name="A-100">
+    <InitCellObjects mode="distance">
+        <Arrangement displacements="1, 1, 1" repetitions="1, 1, 1">
+            <Box origin="188.090403796, 159.142503795, 0" size="14.1421356237, 14.1421356237, 0"/>
+        </Arrangement>
+    </InitCellObjects>
+</Population>
+            </CellPopulations>
+            <Analysis>
+                <Logger time-step="2.94085674579">
+                    <Input>
+                        <Symbol symbol-ref="time"/>
+                        <Symbol symbol-ref="cell.id"/>
+                        <Symbol symbol-ref="cell.type"/>
+                        <Symbol symbol-ref="cell.center.x"/>
+                        <Symbol symbol-ref="cell.center.y"/>
+                    </Input>
+                    <Output><TextOutput/></Output>
+                </Logger>
+            </Analysis>
+        </MorpheusModel>
