@@ -1,0 +1,43 @@
+<CompuCell3D Revision="1">
+    <!-- Defaults describe the development/two_clumps run. CellSorting.py
+         applies the validated profile and regime before CC3D initializes. -->
+    <Potts>
+        <Dimensions x="96" y="96" z="1"/>
+        <Steps>50000</Steps>
+        <!-- Type-specific Potts temperatures are the sole stochastic,
+             non-persistent motility controls. -->
+        <FluctuationAmplitude>
+            <FluctuationAmplitudeParameters CellType="A" FluctuationAmplitude="10.0"/>
+            <FluctuationAmplitudeParameters CellType="B" FluctuationAmplitude="10.0"/>
+        </FluctuationAmplitude>
+        <RandomSeed>1</RandomSeed>
+        <NeighborOrder>2</NeighborOrder>
+        <Boundary_x>NoFlux</Boundary_x>
+        <Boundary_y>NoFlux</Boundary_y>
+    </Potts>
+
+    <Plugin Name="CellType">
+        <CellType TypeName="Medium" TypeId="0"/>
+        <CellType TypeName="A" TypeId="1"/>
+        <CellType TypeName="B" TypeId="2"/>
+    </Plugin>
+
+    <!-- The area penalty enforces cell size and volume exclusion in 2D. -->
+    <Plugin Name="Volume">
+        <TargetVolume>25.0</TargetVolume>
+        <LambdaVolume>2.0</LambdaVolume>
+    </Plugin>
+
+    <Plugin Name="CenterOfMass"/>
+
+    <!-- Symmetric contact energies: lower J is a more favourable interface. -->
+    <Plugin Name="Contact">
+        <Energy Type1="Medium" Type2="Medium">0.0</Energy>
+        <Energy Type1="A" Type2="A">8.0</Energy>
+        <Energy Type1="B" Type2="B">8.0</Energy>
+        <Energy Type1="A" Type2="B">24.0</Energy>
+        <Energy Type1="A" Type2="Medium">18.0</Energy>
+        <Energy Type1="B" Type2="Medium">18.0</Energy>
+        <NeighborOrder>2</NeighborOrder>
+    </Plugin>
+</CompuCell3D>

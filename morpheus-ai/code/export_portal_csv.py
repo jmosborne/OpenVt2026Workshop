@@ -31,10 +31,10 @@ def positive_float(value: str) -> float:
     return number
 
 
-def predicted_cell_diameter(target_volume: float) -> float:
-    if not math.isfinite(target_volume) or target_volume <= 0:
-        raise ExportError("target volume must be finite and greater than zero")
-    return 2.0 * (3.0 * target_volume / (4.0 * math.pi)) ** (1.0 / 3.0)
+def predicted_cell_diameter(target_area: float) -> float:
+    if not math.isfinite(target_area) or target_area <= 0:
+        raise ExportError("target area must be finite and greater than zero")
+    return 2.0 * math.sqrt(target_area / math.pi)
 
 
 def _integer(value: str, label: str) -> int:
@@ -44,7 +44,13 @@ def _integer(value: str, label: str) -> int:
     return int(round(number))
 
 
-def convert(raw_log: Path, output_csv: Path, expected_cells: int, target_volume: float) -> None:
+def convert(
+    raw_log: Path,
+    output_csv: Path,
+    expected_cells: int,
+    target_area: float,
+    dx: float,
+) -> None:
     if expected_cells not in (100, 400):
         raise ExportError("expected cells must be 100 or 400")
 
@@ -97,7 +103,9 @@ def convert(raw_log: Path, output_csv: Path, expected_cells: int, target_volume:
         elif ids != reference_ids:
             raise ExportError(f"cell ID set changed at time {time}")
 
-    diameter = predicted_cell_diameter(target_volume)
+    diameter = predicted_cell_diameter(target_area)
+    if not math.isfinite(dx) or dx <= 0:
+        raise ExportError("dx must be finite and greater than zero")
     type_map = {source_type: portal_type for portal_type, source_type in enumerate(sorted(all_types))}
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     with output_csv.open("w", newline="", encoding="utf-8") as destination:
@@ -111,8 +119,8 @@ def convert(raw_log: Path, output_csv: Path, expected_cells: int, target_volume:
                         "time": time,
                         "cellID": cell_id,
                         "cellType": type_map[cell_type],
-                        "x": f"{x / diameter:.10g}",
-                        "y": f"{y / diameter:.10g}",
+                        "x": f"{x * dx / diameter:.10g}",
+                        "y": f"{y * dx / diameter:.10g}",
                     }
                 )
 
@@ -122,14 +130,15 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("raw_log", type=Path)
     parser.add_argument("output_csv", type=Path)
     parser.add_argument("--expected-cells", required=True, type=int, choices=(100, 400))
-    parser.add_argument("--target-volume", required=True, type=positive_float)
+    parser.add_argument("--target-area", required=True, type=positive_float)
+    parser.add_argument("--dx", required=True, type=positive_float)
     return parser
 
 
 def main() -> None:
     args = build_parser().parse_args()
     try:
-        convert(args.raw_log, args.output_csv, args.expected_cells, args.target_volume)
+        convert(args.raw_log, args.output_csv, args.expected_cells, args.target_area, args.dx)
     except (OSError, ExportError, ValueError) as error:
         raise SystemExit(f"error: {error}") from error
 

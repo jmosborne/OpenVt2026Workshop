@@ -1,0 +1,32 @@
+<CompuCell3D Revision="1">
+    <Potts>
+        <Dimensions x="96" y="96" z="1"/>
+        <Steps>6001</Steps>
+        <FluctuationAmplitude>
+            <FluctuationAmplitudeParameters CellType="Cell" FluctuationAmplitude="10.0"/>
+        </FluctuationAmplitude>
+        <RandomSeed>1</RandomSeed>
+        <NeighborOrder>2</NeighborOrder>
+        <Boundary_x>NoFlux</Boundary_x>
+        <Boundary_y>NoFlux</Boundary_y>
+    </Potts>
+
+    <Plugin Name="CellType">
+        <CellType TypeName="Medium" TypeId="0"/>
+        <CellType TypeName="Cell" TypeId="1"/>
+    </Plugin>
+
+    <Plugin Name="Volume">
+        <TargetVolume>25.0</TargetVolume>
+        <LambdaVolume>2.0</LambdaVolume>
+    </Plugin>
+
+    <Plugin Name="CenterOfMass"/>
+
+    <Plugin Name="Contact">
+        <Energy Type1="Medium" Type2="Medium">0.0</Energy>
+        <Energy Type1="Cell" Type2="Cell">8.0</Energy>
+        <Energy Type1="Cell" Type2="Medium">18.0</Energy>
+        <NeighborOrder>2</NeighborOrder>
+    </Plugin>
+</CompuCell3D>
