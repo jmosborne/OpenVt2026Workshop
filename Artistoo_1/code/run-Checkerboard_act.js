@@ -3,30 +3,37 @@ let CPM = require("./artistoo-cjs-v1.2.0.js")
 let {CentroidsWithTorusCorrection, Centroids} = CPM
 
 let config = {
-	field_size: [150,150],
+	field_size: [250,250],
 	torus: [true,true],
 	conf: {
-		T: 10,
-		J: [[0,12,12],[12,10,6], [12, 6, 8]],
-		V: [0,36, 36],
-		LAMBDA_V: [0,1, 1]
+		T: 100,
+		J: [[0,30,30],[30,20,10], [30, 10, 20]],
+		V: [0,200, 200],
+		LAMBDA_V: [0,1, 1],
+		P: [0,220, 220],
+		LAMBDA_P: [0,2, 2],
+    	LAMBDA_ACT : [0,100,100],
+    	MAX_ACT : [0,10,10],
+    	ACT_MEAN : "geometric"
 	},
 	simsettings: {
-		NRCELLS: [1,1],
-		BURNIN : 0,
-		RUNTIME : 3000,
+		NRCELLS: [5, 5],
+		BURNIN : 10,
+		RUNTIME : 5000,
+		
 		CANVASCOLOR: "EEEEEE",
-		CELLCOLOR: ["ff0000", "0000ff"] ,
+		CELLCOLOR: ["ff", "0000ff"] ,
    		SHOWBORDERS : [true, true],
    		BORDERCOL : ["ffffff", "ffffff"],
+		ACTCOLOR: [true,true],
 		zoom : 2,							
 		SAVEIMG : true,					
-		IMGFRAMERATE : 10,					
+		IMGFRAMERATE : 100,					
 		SAVEPATH : "img",				
-		EXPNAME : "Checkerboard2",	
+		EXPNAME : "Checkerboard",	
 		
 		STATSOUT : { browser: false, node: true }, // Should stats be computed?
-		LOGRATE : 1							// Output stats every <LOGRATE> MCS.
+		LOGRATE : 100							// Output stats every <LOGRATE> MCS.
 
 	}
 }
@@ -41,25 +48,13 @@ let sim = new CPM.Simulation( config, custommethods )
 function initializeGrid(){
 	
 	this.addGridManipulator() 
-	let gm = this.gm
+	this.gm.seedCellsInCircle( 1, 50, this.C.midpoint, 70 )
+	this.gm.seedCellsInCircle( 2, 50, this.C.midpoint, 70 )
 
-	for( let xi = 0; xi < 10; xi++ ){
-		for( let yi = 0; yi < 10; yi++ ){
-			let kind = 1
-			if( yi < 2 | yi > 6 ) kind = 2
-			
-			let rect = gm.makeBox( [45+6*xi,45+6*yi], [6,6]  )
-			gm.assignCellPixels( rect, kind )
-		}
-	}
 }
 
 
-function logStats( add = 1 ){
-
-		if( (this.time + add ) % 10 != 0 ) return
-		
-		
+function logStats(){
 		
 		let allcentroids  = this.C.getStat( CPM.CentroidsWithTorusCorrection )
 
@@ -68,7 +63,7 @@ function logStats( add = 1 ){
 			// roughly cell diameter = 1
 			let thecentroid = allcentroids[cid].map( x => x / 16 )
 			
-			console.log( "0," , (this.time + add )+ "," + cid + "," + 
+			console.log( "0," , this.time + "," + cid + "," + 
 				this.C.cellKind(cid) + "," + thecentroid.join(",") )
 			
 		}
@@ -78,5 +73,4 @@ function logStats( add = 1 ){
 console.log( 'simID' + ",time," + "cellID" + "," + 
 				"cellType" + "," + "x,y" )
 
-sim.logStats( 0 ) // temporary fix for time counter in artistoo.
 sim.run()
