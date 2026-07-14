@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MorpheusModel version="4">
+    <Description>
+        <Title>OpenVT 2026 Checkerboard</Title>
+        <Details>Two-cell-type Cellular Potts model for the OpenVT 2026 workshop.
+The model contains volume regulation, stochastic CPM motility, differential
+adhesion, and connectivity constraints only.</Details>
+    </Description>
+    <Global>
+        <Constant symbol="grid_n" value="10" name="Cells per grid dimension"/>
+        <Constant symbol="total_cells" value="grid_n^2"/>
+        <Constant symbol="target_area_real" value="1"/>
+        <Constant symbol="dx" value="1/sqrt(12)"/>
+        <Constant symbol="target_area_lattice" value="target_area_real/(dx^2)"/>
+        <Constant symbol="cell_diameter_real" value="2*sqrt(target_area_real/pi)"/>
+        <Constant symbol="cell_diameter_lattice" value="cell_diameter_real/dx"/>
+        <Constant symbol="cell_radius" value="cell_diameter_lattice/2"/>
+        <Constant symbol="packing_factor" value="0.8"/>
+        <Constant symbol="cell_spacing" value="packing_factor*cell_diameter_lattice"/>
+        <Constant symbol="row_spacing" value="sqrt(3)/2*cell_spacing"/>
+        <Constant symbol="init_mode" value="1" name="0: shuffled, 1: block"/>
+        <Constant symbol="random_seed" value="0"/>
+        <Constant symbol="mcs_duration" value="1"/>
+        <Constant symbol="temperature" value="1"/>
+        <Constant symbol="area_strength_real" value="43.2"/>
+        <Constant symbol="area_strength_lattice" value="area_strength_real*(dx^4)"/>
+        <Constant symbol="J_AA_real" value="1.5*sqrt(12)"/>
+        <Constant symbol="J_BB_real" value="1.5*sqrt(12)"/>
+        <Constant symbol="J_AB_real" value="0"/>
+        <Constant symbol="J_Am_real" value="1.1*sqrt(12)"/>
+        <Constant symbol="J_Bm_real" value="1.1*sqrt(12)"/>
+        <Constant symbol="J_AA_lattice" value="J_AA_real*dx"/>
+        <Constant symbol="J_BB_lattice" value="J_BB_real*dx"/>
+        <Constant symbol="J_AB_lattice" value="J_AB_real*dx"/>
+        <Constant symbol="J_Am_lattice" value="J_Am_real*dx"/>
+        <Constant symbol="J_Bm_lattice" value="J_Bm_real*dx"/>
+        <Variable symbol="heterotypic_boundary" value="0"/>
+        <Function symbol="heterotypic_boundary_cd">
+            <Expression>heterotypic_boundary*dx/cell_diameter_real</Expression>
+        </Function>
+    </Global>
+    <Space>
+        <Lattice class="hexagonal">
+            <Neighborhood>
+                <Order>optimal</Order>
+            </Neighborhood>
+            <Size symbol="size" value="25*grid_n, 29*grid_n, 0"/>
+            <BoundaryConditions>
+                <Condition type="constant" boundary="x"/>
+                <Condition type="constant" boundary="y"/>
+            </BoundaryConditions>
+        </Lattice>
+        <SpaceSymbol symbol="space"/>
+    </Space>
+    <Time>
+        <StartTime value="0"/>
+        <StopTime value="25000"/>
+        <RandomSeed value="random_seed"/>
+        <TimeSymbol symbol="time"/>
+    </Time>
+    <CellTypes>
+        <CellType name="A" class="biological">
+            <VolumeConstraint target="target_area_lattice" strength="area_strength_lattice"/>
+            <ConnectivityConstraint/>
+            <ChangeCellType newCellType="B" time-step="1">
+                <Condition>
+                    time &lt; 0.5
+                    and
+                    (
+                        (init_mode &lt; 0.5 and mod(abs(sin(cell.id*1.168735195730594)*20430.69986890581),1) &lt; 0.4986327195620106)
+                        or
+                        (init_mode &gt;= 0.5 and cell.center.y &lt; sqrt(3)/4*size.y)
+                    )
+                </Condition>
+            </ChangeCellType>
+            <NeighborhoodReporter>
+                <Input value="cell.type == celltype.B.id" scaling="length"/>
+                <Output symbol-ref="heterotypic_boundary" mapping="sum"/>
+            </NeighborhoodReporter>
+        </CellType>
+        <CellType name="B" class="biological">
+            <VolumeConstraint target="target_area_lattice" strength="area_strength_lattice"/>
+            <ConnectivityConstraint/>
+        </CellType>
+        <CellType name="medium" class="medium"/>
+    </CellTypes>
+    <CPM>
+        <Interaction default="0">
+            <Contact type1="A" type2="A" value="J_AA_lattice"/>
+            <Contact type1="B" type2="B" value="J_BB_lattice"/>
+            <Contact type1="A" type2="B" value="J_AB_lattice"/>
+            <Contact type1="A" type2="medium" value="J_Am_lattice"/>
+            <Contact type1="B" type2="medium" value="J_Bm_lattice"/>
+        </Interaction>
+        <MonteCarloSampler stepper="edgelist">
+            <MCSDuration value="mcs_duration"/>
+            <Neighborhood>
+                <Order>optimal</Order>
+            </Neighborhood>
+            <MetropolisKinetics temperature="temperature"/>
+        </MonteCarloSampler>
+        <ShapeSurface scaling="norm">
+            <Neighborhood>
+                <Order>4</Order>
+            </Neighborhood>
+        </ShapeSurface>
+    </CPM>
+    <CellPopulations>
+        <Population type="A" size="0">
+            <InitCellObjects mode="distance">
+                <Arrangement repetitions="grid_n, grid_n/2, 1" displacements="cell_spacing, 2*row_spacing, 1">
+                    <Sphere radius="cell_radius" center="size.x/2-(grid_n-1)*cell_spacing/2, sqrt(3)/4*size.y-(grid_n-1)*row_spacing/2, 0"/>
+                </Arrangement>
+                <Arrangement repetitions="grid_n, grid_n/2, 1" displacements="cell_spacing, 2*row_spacing, 1">
+                    <Sphere radius="cell_radius" center="size.x/2-(grid_n-2)*cell_spacing/2, sqrt(3)/4*size.y-(grid_n-2)*row_spacing/2, 0"/>
+                </Arrangement>
+            </InitCellObjects>
+        </Population>
+        <BoundaryValue value="medium" boundary="x"/>
+        <BoundaryValue value="medium" boundary="-x"/>
+        <BoundaryValue value="medium" boundary="y"/>
+        <BoundaryValue value="medium" boundary="-y"/>
+    </CellPopulations>
+    <Analysis>
+        <Gnuplotter time-step="2500" decorate="false">
+            <Terminal name="png"/>
+            <Plot title="Cell types">
+                <Cells flooding="true" value="cell.type">
+                    <ColorMap>
+                        <Color value="1" color="purple"/>
+                        <Color value="2" color="green"/>
+                    </ColorMap>
+                </Cells>
+            </Plot>
+        </Gnuplotter>
+        <Logger time-step="250" name="portal_raw">
+            <Input>
+                <Symbol symbol-ref="cell.type"/>
+                <Symbol symbol-ref="cell.center.x"/>
+                <Symbol symbol-ref="cell.center.y"/>
+            </Input>
+            <Output>
+                <TextOutput file-name="portal_raw" separator="comma"/>
+            </Output>
+        </Logger>
+        <Logger time-step="250" name="heterotypic_boundary">
+            <Input>
+                <Symbol symbol-ref="heterotypic_boundary_cd"/>
+            </Input>
+            <Output>
+                <TextOutput file-name="heterotypic_boundary" separator="comma"/>
+            </Output>
+        </Logger>
+        <ModelGraph include-tags="#untagged" format="dot" reduced="false"/>
+    </Analysis>
+</MorpheusModel>
