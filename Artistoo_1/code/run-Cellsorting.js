@@ -6,7 +6,7 @@ let config = {
 	field_size: [150,150],
 	torus: [true,true],
 	conf: {
-		T: 5,
+		T: 10,
 		J: [
 			[0,16,16],
 			[16,14,11], 
