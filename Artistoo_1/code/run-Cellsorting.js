@@ -7,7 +7,10 @@ let config = {
 	torus: [true,true],
 	conf: {
 		T: 10,
-		J: [[0,16,16],[16,14,11], [16, 11, 2]],
+		J: [
+			[0,16,16],
+			[16,14,11], 
+			[16,11,2]],
 		V: [0,36, 36],
 		LAMBDA_V: [0,1, 1]
 	},
@@ -64,7 +67,7 @@ function logStats( add = 1 ){
 		for( let cid of this.C.cellIDs() ){
 		
 			// roughly cell diameter = 1
-			let thecentroid = allcentroids[cid].map( x => x / 16 )
+			let thecentroid = allcentroids[cid] //.map( x => x / 16 )
 			
 			console.log( "0," , (this.time + add )+ "," + cid + "," + 
 				this.C.cellKind(cid) + "," + thecentroid.join(",") )
