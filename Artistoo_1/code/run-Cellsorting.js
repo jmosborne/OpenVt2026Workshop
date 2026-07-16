@@ -67,7 +67,7 @@ function logStats( add = 1 ){
 		for( let cid of this.C.cellIDs() ){
 		
 			// roughly cell diameter = 1
-			let thecentroid = allcentroids[cid] //.map( x => x / 16 )
+			let thecentroid = allcentroids[cid].map( x => x / 6 )
 			
 			console.log( "0," , (this.time + add )+ "," + cid + "," + 
 				this.C.cellKind(cid) + "," + thecentroid.join(",") )
