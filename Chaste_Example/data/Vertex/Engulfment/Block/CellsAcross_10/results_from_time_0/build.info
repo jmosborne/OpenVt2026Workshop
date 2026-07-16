@@ -3,8 +3,8 @@
 		<VersionString>2024.2.15ae60f</VersionString> <!-- build specific -->
 		<IsWorkingCopyModified>1</IsWorkingCopyModified>
 		<BuildInformation>Debug</BuildInformation>
-		<BuildTime>Fri, 03 Jul 2026 00:19:42 +0000</BuildTime>
-		<CurrentTime>Thu, 02 Jul 2026 23:44:11 +0000</CurrentTime>
+		<BuildTime>Mon, 13 Jul 2026 10:54:16 +0000</BuildTime>
+		<CurrentTime>Tue, 14 Jul 2026 16:07:11 +0000</CurrentTime>
 		<BuilderUnameInfo>Linux</BuilderUnameInfo>
 		<ChasteTestOutputDirectory>/home/chaste/testoutput/</ChasteTestOutputDirectory>
 		<Projects>
@@ -60,7 +60,7 @@
 			</Project>
 			<Project>
 				<Name>OpenVtCellSorting</Name>
-				<Version>8735b68807029cd33737252f9d9eac427071aba9</Version>
+				<Version>943b7f201c19f50e4a22e1354e34bed5f777363a</Version>
 				<Modified>True</Modified>
 			</Project>
 			<Project>
